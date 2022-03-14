@@ -1,1 +1,1 @@
-First C codes with Holberton: compiling c program and hello world code
+0x00. C - Hello, World
