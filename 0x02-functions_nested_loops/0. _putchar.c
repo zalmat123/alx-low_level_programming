@@ -1,14 +1,14 @@
-#include "holberton.h"
-
+#include "0. _putchar.h"
+*/
  * main - program that prints Holberton.
  *
  * Return: int
- 
+ /*
 
 int main(void)
 {
 	int n = 0;
-	char str_hbt[9] = "Holberton";
+	char str_hbt[9] = "0. _putchar";
 
 	while (n < 9)
 	{
