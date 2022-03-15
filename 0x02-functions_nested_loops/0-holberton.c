@@ -1,18 +1,18 @@
+#include <unistd.h>
 #include "holberton.h"
+
 /**
- * main - Entry point
- *
- * Return: Always 0 (Success)
+ * main - Check description
+ * Description: It prints the word Holberton, followed by a new line.
+ * Return: 0.
  */
 int main(void)
 {
-	char *sh = "Holberton";
+	char word[9] = "Holberton";
+	int i;
 
-	while (*sh)
-	{
-		_putchar(*sh);
-		sh++;
-	}
+	for (i = 0; i < 9; i++)
+		_putchar(word[i]);
 	_putchar('\n');
 
 	return (0);
