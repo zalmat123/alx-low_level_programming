@@ -1,12 +1,20 @@
+#include <unistd.h>
 #include "main.h"
 
 /**
- * _abs - computes the absolute value of an integer 
- * @n: number 
+ * _abs - returns the absolute value of an integer
+ * @n: The integer to check
  *
- * Return: absolute valueof n 
+ * Return: an integer which is the absolute value of n
  */
 int _abs(int n)
 {
-	return (((n >= 0) ? 1 : -1) * n);
+
+	if (n < 0)
+	{
+		n = n * -1;
+		return (n);
+	}
+	else
+		return (n);
 }
