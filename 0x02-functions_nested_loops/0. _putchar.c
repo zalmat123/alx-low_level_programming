@@ -1,5 +1,5 @@
 #include "0. _putchar.h"
-*/
+/*
  * main - program that prints Holberton.
  *
  * Return: int
