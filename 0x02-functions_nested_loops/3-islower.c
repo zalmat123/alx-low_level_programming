@@ -1,18 +1,12 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
-  * _islower - Checks for lowercase character
-  * @c: The character to be checked
-  *
-  * Return: 1 for lowercase character or 0 for anything else
-  */
+ * _islower - check if character is lower case
+ * @c: character to be checked
+ *
+ * Return: 1 if lowercase 0 otherwhise
+ */
 int _islower(int c)
 {
-	if (c >= 97 && c <= 122)
-	{
-		return (1);
-	}
-
-	return (0);
+	return ('a' <= c && c <= 'z' ? 1 : 0);
 }
-
