@@ -1,10 +1,9 @@
 #include "holberton.h"
 
-/**
  * main - program that prints Holberton.
  *
  * Return: int
- */
+ 
 
 int main(void)
 {
