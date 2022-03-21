@@ -1,5 +1,5 @@
-#ifndef HOLBERTON_H
-#define HOLBERTON_H
+#ifndef main.c
+#define main.c
 
 int _putchar(char c);
 char *_strcat(char *dest, char *src);
@@ -12,4 +12,4 @@ char *cap_string(char *n);
 char *leet(char *n);
 char *rot13(char *n);
 
-#endif /* HOLBERTON_H */
+#endif /* main.c */
