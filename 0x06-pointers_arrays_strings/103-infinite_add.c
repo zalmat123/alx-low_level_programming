@@ -1,53 +1,50 @@
 #include "main.h"
+#include <stdio.h>
+
 /**
- * infinite_add -  adds two numbers
- * @n1: first number
- * @n2: second number
- * @r: result
- * @size_r: result lenght
- * Return: sum
- *
+ * print_buffer - prints buffer
+ * @b: buffer
+ * @size: size
+ * Return: void
  */
-char *infinite_add(char *n1, char *n2, char *r, int size_r)
 
+void print_buffer(char *b, int size)
 {
-	/* local variable declaration */
-	int i = 0, j = 0, k, l = 0, f, s, d = 0;
+	int o, j, i;
 
-	while (n1[i] != '\0')
-		i++;
-	while (n2[j] != '\0')
-		j++;
-	if (i > j)
-		l = i;
-	else
-		l = j;
-	if (l + 1 > size_r)
-		return (0);
-	r[l] = '\0';
-	for (k = l - 1 ; k >= 0 ; k--)
+	o = 0;
+
+	if (size <= 0)
 	{
-		i--;
-		j--;
-		if (i >= 0)
-			f = n1[i] - '0';
-		else
-			f = 0;
-		if (j >= 0)
-			s = n2[j] - '0';
-		else
-			s = 0;
-		r[k] = (f + s + d) % 10 + '0';
-		d = (f + s + d) / 10;
+		printf("\n");
+		return;
 	}
-	if (d == 1)
+	while (o < size)
 	{
-		r[l + 1] = '\0';
-		if (l + 2 > size_r)
-			return (0);
-		while (l-- >= 0)
-			r[l + 1] = r[l];
-		r[0] = d + '0';
+		j = size - o < 10 ? size - o : 10;
+		printf("%08x: ", o);
+		for (i = 0; i < 10; i++)
+		{
+			if (i < j)
+				printf("%02x", *(b + o + i));
+			else
+				printf("  ");
+			if (i % 2)
+			{
+				printf(" ");
+			}
+		}
+		for (i = 0; i < j; i++)
+		{
+			int c = *(b + o + i);
+
+			if (c < 32 || c > 132)
+			{
+				c = '.';
+			}
+			printf("%c", c);
+		}
+		printf("\n");
+		o += 10;
 	}
-	return (r);
 }
