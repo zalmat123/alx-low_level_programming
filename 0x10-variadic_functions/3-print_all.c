@@ -1,97 +1,120 @@
-#include "variadic_functions.h"
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdarg.h>
+#include "variadic_functions.h"
 
 
-
-/**
- * print_char - Prints a character from an arguments list
- * @args: The arguments list
- */
-void print_char(va_list *args)
-{
-	printf("%c", va_arg(*args, int));
-}
-
-
+void (*get_func(char identifier, struct format_struct *fmt_arr))(va_list *);
+void print_char(va_list *arg);
+void print_int(va_list *arg);
+void print_float(va_list *arg);
+void print_string(va_list *arg);
 
 /**
- * print_integer - Prints an integer from an arguments list
- * @args: The arguments list
+ * print_all - prints anything(any data type)
+ * @format: pointer to string of data format types
  */
-void print_integer(va_list *args)
-{
-	printf("%d", va_arg(*args, int));
-}
-
-
-
-/**
- * print_float - Prints a float from an arguments list
- * @args: The arguments list
- */
-void print_float(va_list *args)
-{
-	printf("%f", va_arg(*args, double));
-}
-
-
-
-/**
- * print_string - Prints a character array from an arguments list
- * @args: The arguments list
- */
-void print_string(va_list *args)
-{
-	char *str = va_arg(*args, char *);
-
-	if (!str)
-		str = "(nil)";
-	printf("%s", str);
-}
-
-
-
-/**
- * print_all - prints anything
- * @format: list of types of arguments passed to the function
- *
- * Return: void
- */
-
 void print_all(const char * const format, ...)
 {
-	va_list ap;
-	const char *form = format;
-	char *sep = "";
-	int i = 0, j;
-	fh formaters[] = {
+	unsigned int j = 0;
+	char *separator = "";
+
+	format_struct_ptr fmt_arr[] = {
 		{'c', print_char},
-		{'i', print_integer},
+		{'i', print_int},
 		{'f', print_float},
-		{'s', print_string}
+		{'s', print_string},
+		{'\0', NULL}
 	};
+	void (*get_func_ptr)(va_list *);
+	va_list args;
 
-	va_start(ap, format);
+	va_start(args, format);
 
-	while (form && form[i] != '\0')
+	while (format && format[j] != '\0')
 	{
-		j = 0;
-		while (j < 4)
-		{
-			if (form[i] == (formaters + j)->format)
-			{
-				printf("%s", sep);
-				(formaters + j)->printer(&ap);
-				sep = ", ";
-				break;
-			}
+		get_func_ptr = get_func(format[j], fmt_arr);
 
-			j++;
+		if (get_func_ptr)
+		{
+			printf("%s", separator);
+			get_func_ptr(&args);
+			separator = ", ";
 		}
+
+		j++;
+	}
+
+	va_end(args);
+	printf("\n");
+}
+
+/**
+ * get_func - gets corresponding function of format type
+ * @fmt_arr: format types array
+ * @identifier: format type
+ * Return: pointer to function (SUCCESS) or
+ * NULL (FAILURE)
+ */
+
+void (*get_func(char identifier, struct format_struct *fmt_arr))(va_list *)
+{
+	int i = 0;
+
+	while (fmt_arr[i].format)
+	{
+		if (fmt_arr[i].format == identifier)
+		{
+			return (fmt_arr[i].fmt_print_func);
+		}
+
 		i++;
 	}
-	printf("\n");
-	va_end(ap);
+
+	return (fmt_arr[i].fmt_print_func);
+}
+
+/**
+ * print_char - prints a char
+ * @arg: pointer to a char
+ */
+
+void print_char(va_list *arg)
+{
+	printf("%c", va_arg(*arg, int));
+}
+
+/**
+ * print_int - prints an int
+ * @arg: pointer to int
+ */
+
+void print_int(va_list *arg)
+{
+	printf("%d", va_arg(*arg, int));
+}
+
+/**
+ * print_float - prints a float data type
+ * @arg: pointer to float
+ */
+
+void print_float(va_list *arg)
+{
+	printf("%f", va_arg(*arg, double));
+}
+
+/**
+ * print_string - prints a string
+ * @arg: pointer to string
+ */
+
+void print_string(va_list *arg)
+{
+	char *str[2];
+	int i;
+
+	str[0] = va_arg(*arg, char *);
+	str[1] = "(nil)";
+	i = str[0] == NULL;
+	printf("%s", str[i]);
 }
