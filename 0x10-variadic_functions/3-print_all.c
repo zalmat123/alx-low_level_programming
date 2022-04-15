@@ -1,92 +1,97 @@
+#include "variadic_functions.h"
 #include <stdarg.h>
 #include <stdio.h>
-#include "variadic_functions.h"
+#include <stdlib.h>
+
+
 
 /**
- * print_c - print a char
- * @c: char to print
- *
- * Return: void
+ * print_char - Prints a character from an arguments list
+ * @args: The arguments list
  */
-void print_c(va_list c)
+void print_char(va_list *args)
 {
-	printf("%c", va_arg(c, int));
+	printf("%c", va_arg(*args, int));
 }
 
-/**
- * print_s - prints a string
- * @s: string to print
- *
- * Return: void
- */
-void print_s(va_list s)
-{
-	char *str = va_arg(s, char *);
 
-	if (str == NULL)
+
+/**
+ * print_integer - Prints an integer from an arguments list
+ * @args: The arguments list
+ */
+void print_integer(va_list *args)
+{
+	printf("%d", va_arg(*args, int));
+}
+
+
+
+/**
+ * print_float - Prints a float from an arguments list
+ * @args: The arguments list
+ */
+void print_float(va_list *args)
+{
+	printf("%f", va_arg(*args, double));
+}
+
+
+
+/**
+ * print_string - Prints a character array from an arguments list
+ * @args: The arguments list
+ */
+void print_string(va_list *args)
+{
+	char *str = va_arg(*args, char *);
+
+	if (!str)
 		str = "(nil)";
 	printf("%s", str);
 }
 
-/**
- * print_i - prints an int
- * @i: int to print
- *
- * Return: void
- */
-void print_i(va_list i)
-{
-	printf("%d", va_arg(i, int));
-}
 
-/**
- * print_f - prints a float
- * @f: float to print
- *
- * Return: void
- */
-void print_f(va_list f)
-{
-	printf("%f", va_arg(f, double));
-}
 
 /**
  * print_all - prints anything
- * @format: list of argument types passed to the function
+ * @format: list of types of arguments passed to the function
  *
  * Return: void
  */
+
 void print_all(const char * const format, ...)
 {
-	unsigned int i, j;
-	print_t p[] = {
-		{"c", print_c},
-		{"s", print_s},
-		{"i", print_i},
-		{"f", print_f},
-		{NULL, NULL}
+	va_list ap;
+	const char *form = format;
+	char *sep = "";
+	int i = 0, j;
+	fh formaters[] = {
+		{'c', print_char},
+		{'i', print_integer},
+		{'f', print_float},
+		{'s', print_string}
 	};
-	va_list valist;
-	char *separator = "";
 
-	va_start(valist, format);
-	i = 0;
-	while (format && format[i])
+	va_start(ap, format);
+
+	while (form && form[i] != '\0')
 	{
 		j = 0;
-		while (p[j].t != NULL)
+		while (j < 4)
 		{
-			if (*(p[j].t) == format[i])
+			if (form[i] == (formaters + j)->format)
 			{
-				printf("%s", separator);
-				p[j].f(valist);
-				separator = ", ";
+				printf("%s", sep);
+				(formaters + j)->printer(&ap);
+				sep = ", ";
 				break;
 			}
+
 			j++;
 		}
 		i++;
 	}
-	va_end(valist);
 	printf("\n");
+	va_end(ap);
 }
